@@ -21,30 +21,33 @@ namespace FitLife
         public DateTime StartDate { get; set; }
         public DateTime ValidUntil { get; set; }
 
-        private bool IsActive()
-        {
-            if (StartDate < DateTime.Today)
-            {
-                return true;
-            }
+        private bool _hasBeenActivated = false;
 
-            return false;
-        }
+        //private bool IsActive()
+        //{
+        //    if (StartDate != null)
+        //    {
+        //        return true;
+        //    }
+
+        //    return false;
+        //}
 
         public void ActivateMembership(DateTime startDate)
         {
-            if (IsActive())
+            if (_hasBeenActivated)
             {
-                throw new Exception($"Het lidmaatschap van lid {Name} kan niet geactiveerd worden omdat het is al actief is!");
+                throw new Exception($"Het lidmaatschap van lid {Name} kan niet geactiveerd worden omdat het al actief is!");
             }
 
             StartDate = startDate;
             ValidUntil = startDate.AddYears(1);
+            _hasBeenActivated = true;
         }
 
         public void RenewMembership(int years)
         {
-            if (!IsActive())
+            if (!_hasBeenActivated)
             {
                 throw new Exception($"Het lidmaatschap van lid {Name} kan niet verlengd worden omdat dit niet actief is!");
             }
@@ -53,7 +56,7 @@ namespace FitLife
 
         public void DeactivateMembership(DateTime endDate)
         {
-            if (!IsActive())
+            if (!_hasBeenActivated)
             {
                 throw new Exception($"Het lidmaatschap van lid {Name} kan niet gestopt worden omdat het niet actief is!");
             }

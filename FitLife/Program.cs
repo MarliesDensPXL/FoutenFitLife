@@ -21,11 +21,11 @@
 
             //Print summary:
             Console.Clear();
-            Console.Write($"Bedankt {name}, controleer je gegevens nog een laatste keer:");
+            Console.WriteLine($"Bedankt {name}, controleer je gegevens nog een laatste keer:");
             Console.WriteLine($"Naam:   \t {name}");
-            Console.WriteLine($"Lengte: \t {weight:f2}m");
-            Console.WriteLine($"Gewicht:\t {height:f2}kg");
-            Console.WriteLine($"Start:  \t {training.ToLongDateString}");
+            Console.WriteLine($"Lengte: \t {height:f2}m");
+            Console.WriteLine($"Gewicht:\t {weight:f2}kg");
+            Console.WriteLine($"Start:  \t {training.ToLongDateString()}");
 
             Console.WriteLine("Druk op een toets om je lidmaatschap te activeren...");
             Console.ReadKey(true);
@@ -37,7 +37,7 @@
 
             member.ActivateMembership(training);
 
-            Console.WriteLine($"Lidmaatschap succesvol geactiveerd voor {member.Name} op {member.StartDate}.");
+            Console.WriteLine($"Lidmaatschap succesvol geactiveerd voor {member.Name} op {member.StartDate.ToLongDateString()}.");
             Console.WriteLine("Druk op een toets om verder te gaan...");
             Console.ReadKey(true);
 
@@ -59,7 +59,7 @@
                 {
                     case "1":
                         member.RenewMembership(1);
-                        Console.WriteLine($"Proficiat {member.Name}, jouw lidmaatschap is verlengd tot {member.ValidUntil}");
+                        Console.WriteLine($"Proficiat {member.Name}, jouw lidmaatschap is verlengd tot {member.ValidUntil.ToShortDateString()}");
                         break;
                     case "2":
                         Console.Write("Datum stopzetting: ");
