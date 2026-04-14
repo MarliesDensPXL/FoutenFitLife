@@ -15,11 +15,11 @@ namespace FitLife
             Weight = weight;
         }
 
-        public string Name { get; }
-        public double Height { get; }
-        public double Weight { get; }
-        public DateTime StartDate { get; }
-        public DateTime ValidUntil { get; }
+        public string Name { get; set; }
+        public double Height { get; set; }
+        public double Weight { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime ValidUntil { get; set; }
 
         private bool IsActive()
         {
@@ -31,11 +31,11 @@ namespace FitLife
             return false;
         }
 
-        public void ActivateMemebership(DateTime startDate)
+        public void ActivateMembership(DateTime startDate)
         {
             if (IsActive())
             {
-                throw new Exception("Het lidmaatschap van lid {Name} kan niet geactiveerd worden omdat het is al actief is!");
+                throw new Exception($"Het lidmaatschap van lid {Name} kan niet geactiveerd worden omdat het is al actief is!");
             }
 
             StartDate = startDate;
@@ -46,16 +46,16 @@ namespace FitLife
         {
             if (!IsActive())
             {
-                throw new Exception("Het lidmaatschap van lid {name} kan niet verlengd worden omdat dit niet actief is!");
+                throw new Exception($"Het lidmaatschap van lid {Name} kan niet verlengd worden omdat dit niet actief is!");
             }
             ValidUntil = ValidUntil.AddYears(2);
         }
 
         public void DeactivateMembership(DateTime endDate)
         {
-            if (IsActive())
+            if (!IsActive())
             {
-                throw new Exception("Het lidmaatschap van lid {Name} kan niet gestopt worden omdat het niet actief is!");
+                throw new Exception($"Het lidmaatschap van lid {Name} kan niet gestopt worden omdat het niet actief is!");
             }
 
             ValidUntil = endDate;

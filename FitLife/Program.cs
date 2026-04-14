@@ -21,16 +21,16 @@
 
             //Print summary:
             Console.Clear();
-            Console.Write("Bedankt {name}, controleer je gegevens nog een laatste keer:");
+            Console.Write($"Bedankt {name}, controleer je gegevens nog een laatste keer:");
             Console.WriteLine($"Naam:   \t {name}");
             Console.WriteLine($"Lengte: \t {weight:f2}m");
             Console.WriteLine($"Gewicht:\t {height:f2}kg");
-            Console.WriteLine($"Start:  \t {traning.ToLongDateString}");
+            Console.WriteLine($"Start:  \t {training.ToLongDateString}");
 
             Console.WriteLine("Druk op een toets om je lidmaatschap te activeren...");
             Console.ReadKey(true);
 
-            Member member;
+            Member member = new Member(name, height, weight);
             member.Name = name;
             member.Height = height;
             member.Weight = weight;
@@ -46,7 +46,7 @@
             do
             {
                 Console.Clear();
-                Console.WriteLine($"Welkom bij FitLife {member.name}!");
+                Console.WriteLine($"Welkom bij FitLife {member.Name}!");
                 Console.WriteLine("Beheer hier je lidmaatschap");
                 Console.WriteLine();
                 Console.WriteLine("1. Lidmaatschap verlengen");
@@ -58,13 +58,14 @@
                 switch (option)
                 {
                     case "1":
-                        member.RenewMembership();
-                        Console.WriteLine($"Proficiat {member.Name}, jouw lidmaatschap is verlengd tot {member.ValidUnit}")
+                        member.RenewMembership(1);
+                        Console.WriteLine($"Proficiat {member.Name}, jouw lidmaatschap is verlengd tot {member.ValidUntil}");
                         break;
                     case "2":
                         Console.Write("Datum stopzetting: ");
                         string endDate = Console.ReadLine();
-                        member.DeactivateMembership(endDate);
+                        DateTime end = DateTime.Parse(endDate);
+                        member.DeactivateMembership(end) ;
                         break;
                     default:
                         close = true;
