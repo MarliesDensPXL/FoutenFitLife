@@ -3,21 +3,79 @@
     internal class Program
     {
         static void Main(string[] args)
+
+
         {
             Console.WriteLine("Welkom bij FitLife!");
             Console.WriteLine("Schrijf je in via onderstaande formulier.");
             Console.WriteLine();
             Console.Write("Naam: ");
             string name = Console.ReadLine();
+            while (string.IsNullOrWhiteSpace(name))
+            {
+                Console.Write("Ongeldige invoer. Vul je naam in: ");
+                name = Console.ReadLine();
+            }
 
-            Console.Write("Lengte in meter: ");
-            double height = double.Parse(Console.ReadLine());
+            bool isValidHeight = false;
+            double height = 0;
+            while (!isValidHeight)
+            {
+                Console.Write("Lengte in meter: ");
+                if (!double.TryParse(Console.ReadLine(), out height))
+                    {
+                    Console.WriteLine("Ongeldige invoer.");
+                    continue;
+                }
+                try
+                {
+                    new Member(name, height, 1);
+                    
+                    isValidHeight = true;
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
 
-            Console.Write("Gewicht in kg: ");
-            double weight = double.Parse(Console.ReadLine());
+            bool isValidWeight = false;
+            double weight = 0;
+            
+            while (!isValidWeight)
+            {
+                Console.Write("Gewicht in kg: ");
+                if (!double.TryParse(Console.ReadLine(), out weight))
+                    {
+                    Console.WriteLine("Ongeldige invoer.");
+                    continue;
+                }
+                try
+                {
+                    new Member(name, height, weight);
+                    isValidWeight = true;
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
 
-            Console.Write("Datum eerste training: ");
-            DateTime training = DateTime.Parse(Console.ReadLine());
+
+            bool isValidTraining = false;
+            DateTime training = default(DateTime);
+            while (!isValidTraining)
+            {
+                Console.Write("Datum eerste training: ");
+                if (!DateTime.TryParse(Console.ReadLine(), out training))
+                {
+                    Console.WriteLine("Ongeldige invoer");
+                    continue;
+                }
+
+                isValidTraining = true;
+            }
+           
 
             //Print summary:
             Console.Clear();
@@ -30,10 +88,13 @@
             Console.WriteLine("Druk op een toets om je lidmaatschap te activeren...");
             Console.ReadKey(true);
 
+
             Member member = new Member(name, height, weight);
-            member.Name = name;
-            member.Height = height;
-            member.Weight = weight;
+            //member.Name = name;
+            //member.Height = height;
+            //member.Weight = weight;
+            
+
 
             member.ActivateMembership(training);
 

@@ -16,8 +16,49 @@ namespace FitLife
         }
 
         public string Name { get; set; }
-        public double Height { get; set; }
-        public double Weight { get; set; }
+
+
+        private double _height;
+
+        public double Height
+        {
+            get { return _height; }
+            set 
+            { 
+                if (value >= 1.00 && value <= 3.00)
+                {
+                    _height = value;
+                }
+                else
+                {
+                    
+                    throw new ArgumentOutOfRangeException("Ongeldige lengte.");
+                }
+                    
+             }
+        }
+
+        private double _weight;
+
+        public double Weight
+        {
+            get { return _weight; }
+            set
+            {
+                if (value > 40 && value < 200)
+                {
+                    _weight = value;
+                }
+                else
+                {
+
+                    throw new ArgumentOutOfRangeException("Ongeldig gewicht.");
+                }
+
+            }
+        }
+
+                
         public DateTime StartDate { get; set; }
         public DateTime ValidUntil { get; set; }
 
