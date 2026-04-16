@@ -3,80 +3,40 @@
     internal class Program
     {
         static void Main(string[] args)
-
-
         {
             Console.WriteLine("Welkom bij FitLife!");
             Console.WriteLine("Schrijf je in via onderstaande formulier.");
             Console.WriteLine();
-            Console.Write("Naam: ");
-            string name = Console.ReadLine();
-            while (string.IsNullOrWhiteSpace(name))
-            {
-                Console.Write("Ongeldige invoer. Vul je naam in: ");
-                name = Console.ReadLine();
-            }
 
-            bool isValidHeight = false;
+            string name;
+            
+            do
+            {
+                Console.Write("Naam: ");
+                name = Console.ReadLine();
+            } while (string.IsNullOrWhiteSpace(name));
+
+            //bool isValidHeight = false;
             double height = 0;
-            double weight = 50; //@Wim: ik heb dit op 50 gezet omdat dit een geldige waarde is in mijn member-klasse, maar ik neem aan dat er een elegantere manier is om dit op te lossen. (Die ik dus zelf nog niet gevonden heb)
-            while (!isValidHeight)
+            double weight = 0; //@Wim: ik heb dit op 50 gezet omdat dit een geldige waarde is in mijn member-klasse, maar ik neem aan dat er een elegantere manier is om dit op te lossen. (Die ik dus zelf nog niet gevonden heb)
+            DateTime training;
+
+            do
             {
                 Console.Write("Lengte in meter: ");
-                if (!double.TryParse(Console.ReadLine(), out height))
-                    {
-                    Console.WriteLine("Ongeldige invoer.");
-                    continue;
-                }
-                try
-                {
-                    new Member(name, height, weight); //@Wim: op welke plaats moet ik een nieuw object aanmaken? 
-                    
-                    isValidHeight = true;
-                }
-                catch (ArgumentException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
+            } while (!double.TryParse(Console.ReadLine(), out height));
 
-            bool isValidWeight = false;
-            
-            
-            while (!isValidWeight)
+
+            do
             {
                 Console.Write("Gewicht in kg: ");
-                if (!double.TryParse(Console.ReadLine(), out weight))
-                    {
-                    Console.WriteLine("Ongeldige invoer.");
-                    continue;
-                }
-                try
-                {
-                    new Member(name, height, weight);
-                    isValidWeight = true;
-                }
-                catch (ArgumentException ex)
-                {
-                    Console.WriteLine(ex.Message);
-
-                }
-            }
+            } while (!double.TryParse(Console.ReadLine(), out weight));
 
 
-            bool isValidTraining = false;
-            DateTime training = default(DateTime);
-            while (!isValidTraining)
+            do
             {
                 Console.Write("Datum eerste training: ");
-                if (!DateTime.TryParse(Console.ReadLine(), out training))
-                {
-                    Console.WriteLine("Ongeldige invoer");
-                    continue;
-                }
-
-                isValidTraining = true;
-            }
+            } while (!DateTime.TryParse(Console.ReadLine(), out training));
            
 
             //Print summary:
@@ -90,41 +50,40 @@
             Console.WriteLine("Druk op een toets om je lidmaatschap te activeren...");
             Console.ReadKey(true);
 
+            Member member;
 
-            Member member = new Member(name, height, weight);
-            //member.Name = name;
-            //member.Height = height;
-            //member.Weight = weight;
-
-            bool activate = false;
-
-            while (!activate) //TODO aanpassen: er moet een nieuwe datum gelezen worden (loop verplaatsen naar ingave datum training hierboven?)
+            try
             {
-                try
-                {
-                    member.ActivateMembership(training);
+                member = new Member(name, height, weight); //hier wordt height + weight gevalideerd
+                //member.Name = name;
+                //member.Height = height;
+                //member.Weight = weight;
 
-                    Console.WriteLine($"Lidmaatschap succesvol geactiveerd voor {member.Name} op {member.StartDate.ToLongDateString()}.");
-                    Console.WriteLine("Druk op een toets om verder te gaan...");
-                    Console.ReadKey(true);
-                    activate = true;
-                }
-                catch (InvalidOperationException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    Console.Write("Geef een geldige datum in: ");
-                    Console.ReadLine();
-                    continue;
-                }
+                member.ActivateMembership(training);
 
-                catch (ArgumentException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    Console.Write("Geef een geldige datum in: ");
-                    Console.ReadLine();
-                    continue;
-                }
+                Console.WriteLine($"Lidmaatschap succesvol geactiveerd voor {member.Name} op {member.StartDate.ToLongDateString()}.");
+                Console.WriteLine("Druk op een toets om verder te gaan...");
+                Console.ReadKey(true);
             }
+            catch (ArgumentException ae)
+            {
+                //Eventuele fouten uit constructor
+                Console.WriteLine(ae.Message);
+                return;
+            }
+            catch (InvalidOperationException ioe)
+            {
+                //Eventuele fouten uit ActivateMembership
+                Console.WriteLine(ioe.Message);
+                return;
+            }
+            //catch(Exception ex)
+            //{
+            //    //Alle fouten samen opvangen
+            //    Console.WriteLine(ex.Message);
+            //    return;
+            //}
+
 
             bool close = false;
 
