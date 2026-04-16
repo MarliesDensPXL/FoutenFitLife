@@ -19,6 +19,7 @@
 
             bool isValidHeight = false;
             double height = 0;
+            double weight = 50; //@Wim: ik heb dit op 50 gezet omdat dit een geldige waarde is in mijn member-klasse, maar ik neem aan dat er een elegantere manier is om dit op te lossen. (Die ik dus zelf nog niet gevonden heb)
             while (!isValidHeight)
             {
                 Console.Write("Lengte in meter: ");
@@ -29,18 +30,18 @@
                 }
                 try
                 {
-                    new Member(name, height, 1);
+                    new Member(name, height, weight); //@Wim: op welke plaats moet ik een nieuw object aanmaken? 
                     
                     isValidHeight = true;
                 }
-                catch (ArgumentOutOfRangeException ex)
+                catch (ArgumentException ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
             }
 
             bool isValidWeight = false;
-            double weight = 0;
+            
             
             while (!isValidWeight)
             {
@@ -55,9 +56,10 @@
                     new Member(name, height, weight);
                     isValidWeight = true;
                 }
-                catch (ArgumentOutOfRangeException ex)
+                catch (ArgumentException ex)
                 {
                     Console.WriteLine(ex.Message);
+
                 }
             }
 
@@ -93,14 +95,36 @@
             //member.Name = name;
             //member.Height = height;
             //member.Weight = weight;
-            
 
+            bool activate = false;
 
-            member.ActivateMembership(training);
+            while (!activate) //TODO aanpassen: er moet een nieuwe datum gelezen worden (loop verplaatsen naar ingave datum training hierboven?)
+            {
+                try
+                {
+                    member.ActivateMembership(training);
 
-            Console.WriteLine($"Lidmaatschap succesvol geactiveerd voor {member.Name} op {member.StartDate.ToLongDateString()}.");
-            Console.WriteLine("Druk op een toets om verder te gaan...");
-            Console.ReadKey(true);
+                    Console.WriteLine($"Lidmaatschap succesvol geactiveerd voor {member.Name} op {member.StartDate.ToLongDateString()}.");
+                    Console.WriteLine("Druk op een toets om verder te gaan...");
+                    Console.ReadKey(true);
+                    activate = true;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.Write("Geef een geldige datum in: ");
+                    Console.ReadLine();
+                    continue;
+                }
+
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.Write("Geef een geldige datum in: ");
+                    Console.ReadLine();
+                    continue;
+                }
+            }
 
             bool close = false;
 

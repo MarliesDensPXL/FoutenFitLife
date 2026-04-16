@@ -32,7 +32,7 @@ namespace FitLife
                 else
                 {
                     
-                    throw new ArgumentOutOfRangeException("Ongeldige lengte.");
+                    throw new ArgumentException("Ongeldige lengte."); // of throw new ArgumentOutOfRangeException(nameof (Heigth), "Ongeldige lengte.")
                 }
                     
              }
@@ -52,7 +52,7 @@ namespace FitLife
                 else
                 {
 
-                    throw new ArgumentOutOfRangeException("Ongeldig gewicht.");
+                    throw new ArgumentException("Ongeldig gewicht.");
                 }
 
             }
@@ -78,12 +78,25 @@ namespace FitLife
         {
             if (_hasBeenActivated)
             {
-                throw new Exception($"Het lidmaatschap van lid {Name} kan niet geactiveerd worden omdat het al actief is!");
+                throw new InvalidOperationException($"Het lidmaatschap van lid {Name} kan niet geactiveerd worden omdat het al actief is!");
             }
 
-            StartDate = startDate;
-            ValidUntil = startDate.AddYears(1);
-            _hasBeenActivated = true;
+            if (startDate < DateTime.Now.AddYears(-1))
+            {
+                throw new ArgumentException($"Het lidmaatschap van {Name} kan niet geactiveerd worden omdat de startdatum meer dan een jaar in het verleden ligt.");
+            }
+
+            if (startDate > DateTime.Now.AddMonths(1))
+            {
+                throw new ArgumentException($"Het lidmaatschap van {Name} kan niet geactiveerd worden omdat de startdatum meer dan een maand in de toekomst ligt.");
+            }
+            
+        
+
+                StartDate = startDate;
+                ValidUntil = startDate.AddYears(1);
+                _hasBeenActivated = true;
+            
         }
 
         public void RenewMembership(int years)
