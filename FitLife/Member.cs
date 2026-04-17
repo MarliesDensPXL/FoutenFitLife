@@ -81,12 +81,12 @@ namespace FitLife
                 throw new InvalidOperationException($"Het lidmaatschap van lid {Name} kan niet geactiveerd worden omdat het al actief is!");
             }
 
-            if (startDate < DateTime.Now.AddYears(-1))
+            if (startDate < DateTime.Today.AddYears(-1))
             {
                 throw new ArgumentException($"Het lidmaatschap van {Name} kan niet geactiveerd worden omdat de startdatum meer dan een jaar in het verleden ligt.");
             }
 
-            if (startDate > DateTime.Now.AddMonths(1))
+            if (startDate > DateTime.Today.AddMonths(1))
             {
                 throw new ArgumentException($"Het lidmaatschap van {Name} kan niet geactiveerd worden omdat de startdatum meer dan een maand in de toekomst ligt.");
             }
@@ -105,7 +105,7 @@ namespace FitLife
             {
                 throw new Exception($"Het lidmaatschap van lid {Name} kan niet verlengd worden omdat dit niet actief is!");
             }
-            ValidUntil = ValidUntil.AddYears(2);
+            ValidUntil = ValidUntil.AddYears(years);
         }
 
         public void DeactivateMembership(DateTime endDate)

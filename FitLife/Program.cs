@@ -28,12 +28,6 @@
             {
                 Console.Write("Lengte in meter: ");
                 
-                //if (!double.TryParse(Console.ReadLine(), out height))
-                //{
-                //    Console.WriteLine("Ongeldige invoer.");
-                    
-                    
-                //}
             } while (!double.TryParse(Console.ReadLine(), out height));
 
 
@@ -41,18 +35,12 @@
             {
                 Console.Write("Gewicht in kg: ");
                
-                //if (!double.TryParse(Console.ReadLine(), out weight))
-                //{
-                //    Console.WriteLine("Ongeldige invoer.");
-                //    continue;
-                //}
             } while (!double.TryParse(Console.ReadLine(), out weight));
 
             do
             {
                 Console.Write("Datum eerste training: ");
                 
-
             } while (!DateTime.TryParse(Console.ReadLine(), out training));
            
                        
@@ -86,65 +74,53 @@
                 return;
             }
 
-
-            
-            //member.Name = name;
-            //member.Height = height;
-            //member.Weight = weight;
-
-            //bool activate = false;
-
-            //while (!activate) //TODO aanpassen: er moet een nieuwe datum gelezen worden (loop verplaatsen naar ingave datum training hierboven?)
-            //{
-            //    try
-            //    {
-            //        member.ActivateMembership(training);
-
-                    
-            //        activate = true;
-            //    }
-            //    catch (InvalidOperationException ex)
-            //    {
-            //        Console.WriteLine(ex.Message);
-            //        Console.Write("Geef een geldige datum in: ");
-            //        Console.ReadLine();
-            //        continue;
-            //    }
-
-            //    catch (ArgumentException ex)
-            //    {
-            //        Console.WriteLine(ex.Message);
-            //        Console.Write("Geef een geldige datum in: ");
-            //        Console.ReadLine();
-            //        continue;
-            //    }
-            //}
+                        
+         
 
             bool close = false;
 
             do
             {
                 Console.Clear();
-                Console.WriteLine($"Welkom bij FitLife {member.Name}!");
+                Console.WriteLine($"Welkom bij FitLife, {member.Name}!");
                 Console.WriteLine("Beheer hier je lidmaatschap");
                 Console.WriteLine();
-                Console.WriteLine("1. Lidmaatschap verlengen");
+                Console.WriteLine("1. Lidmaatschap verlengen");                             
                 Console.WriteLine("2. Lidmaatschap stopzetten");
-                Console.Write("Selecteer de gewenste optie: ");
 
-                string option = Console.ReadLine();
+                string option;
+                do
+                {
+                    Console.Write("Selecteer de gewenste optie: ");
+                    option = Console.ReadLine();
+                } while (!option.Equals("1") && !option.Equals("2"));
 
                 switch (option)
                 {
                     case "1":
-                        member.RenewMembership(1);
-                        Console.WriteLine($"Proficiat {member.Name}, jouw lidmaatschap is verlengd tot {member.ValidUntil.ToShortDateString()}");
+                        int years;
+                        do
+                        {
+                            Console.WriteLine("Met hoeveel jaar wil je verlengen? Kies '1' of '2': ");
+
+                        } while (!int.TryParse(Console.ReadLine(), out years) || (years != 1 && years != 2));
+
+                         member.RenewMembership(years);
+                         Console.WriteLine($"Proficiat {member.Name}, jouw lidmaatschap is verlengd tot {member.ValidUntil.ToShortDateString()}");
+                        
                         break;
+                        
+
                     case "2":
-                        Console.Write("Datum stopzetting: ");
-                        string endDate = Console.ReadLine();
-                        DateTime end = DateTime.Parse(endDate);
+                        DateTime end;
+                        do
+                        {
+                            Console.Write("Datum stopzetting: ");
+                        } while (!DateTime.TryParse(Console.ReadLine(), out end));
+                        
+                                            
                         member.DeactivateMembership(end) ;
+                        Console.WriteLine($"Beste {member.Name}, jouw lidmaatschap is stopgezet op {member.ValidUntil.ToShortDateString()}");
                         break;
                     default:
                         close = true;
