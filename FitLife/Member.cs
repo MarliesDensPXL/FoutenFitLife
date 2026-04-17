@@ -103,8 +103,16 @@ namespace FitLife
         {
             if (!_hasBeenActivated)
             {
-                throw new Exception($"Het lidmaatschap van lid {Name} kan niet verlengd worden omdat dit niet actief is!");
+                throw new InvalidOperationException($"Het lidmaatschap van lid {Name} kan niet verlengd worden omdat dit niet actief is!");
             }
+
+            
+
+            if (DateTime.Today < ValidUntil.AddDays(-30))
+            {
+                throw new ArgumentException($"Het lidmaatschap van {Name} kan enkel verlengd worden tijdens de laatste 30 dagen van de actieve periode.");
+            }
+
             ValidUntil = ValidUntil.AddYears(years);
         }
 
@@ -115,6 +123,11 @@ namespace FitLife
                 throw new Exception($"Het lidmaatschap van lid {Name} kan niet gestopt worden omdat het niet actief is!");
             }
 
+            if (DateTime.Today < ValidUntil.AddDays(-60))
+            {
+                throw new ArgumentException($"Het lidmaatschap van {Name} kan enkel stopgezet worden tijdens de laatste 60 dagen van de actieve periode.");
+            }
+               
             ValidUntil = endDate;
         }
     }

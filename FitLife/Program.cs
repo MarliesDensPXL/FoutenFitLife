@@ -105,9 +105,16 @@
 
                         } while (!int.TryParse(Console.ReadLine(), out years) || (years != 1 && years != 2));
 
-                         member.RenewMembership(years);
-                         Console.WriteLine($"Proficiat {member.Name}, jouw lidmaatschap is verlengd tot {member.ValidUntil.ToShortDateString()}");
-                        
+                        try
+                        {
+                            member.RenewMembership(years);
+                            Console.WriteLine($"Proficiat {member.Name}, jouw lidmaatschap is verlengd tot {member.ValidUntil.ToShortDateString()}");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }                   
+                                                
                         break;
                         
 
@@ -117,10 +124,17 @@
                         {
                             Console.Write("Datum stopzetting: ");
                         } while (!DateTime.TryParse(Console.ReadLine(), out end));
+                          
+                        try
+                        {
+                            member.DeactivateMembership(end);
+                            Console.WriteLine($"Beste {member.Name}, jouw lidmaatschap is stopgezet op {member.ValidUntil.ToShortDateString()}");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
                         
-                                            
-                        member.DeactivateMembership(end) ;
-                        Console.WriteLine($"Beste {member.Name}, jouw lidmaatschap is stopgezet op {member.ValidUntil.ToShortDateString()}");
                         break;
                     default:
                         close = true;
